@@ -36,9 +36,10 @@ jobs:
           kind get clusters
           kubectl config get-contexts
           kubectl get all,nodes -o wide
-          kubectl create deploy k6 --image nginx:alpine --port 80 && kubectl expose deploy k6 --port 80 && kubectl create ing k6 ---class nginx --rule k6-test.ingress-nginx.local/=k6:80k6-test.ingress-nginx.local/=k6:80
-
+          kubectl --kubeconfig ./k6-kubeconfig create deploy k6 --image nginx:alpine --port 80 && kubectl --kubeconfig ./k6-kubeconfig expose deploy k6 --port 80 && kubectl --kubeconfig ./k6-kubeconfig create ing k6 ---class nginx --rule k6-test.ingress-nginx.local/=k6:80k6-test.ingress-nginx.local/=k6:80
+          kubectl get all,ing --kubeconfig ./k6-kubeconfig
+          
       - name: Run k6 cloud test
         uses: k6io/action@v0.1
         with:
-          filename: test.js
+          filename: /home/runner/work/k6-loadtest-example/k6-loadtest-example/test.js
