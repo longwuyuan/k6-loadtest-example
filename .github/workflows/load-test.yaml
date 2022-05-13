@@ -35,7 +35,7 @@ jobs:
           make dev-env
           kind get clusters
           kubectl config get-contexts
-          kubectl get all,nodes -o wide
+          kubectl get all,nodes -o wide --kubeconfig ./k6-kubeconfig
           kubectl --kubeconfig ./k6-kubeconfig create deploy k6 --image nginx:alpine --port 80 && kubectl --kubeconfig ./k6-kubeconfig expose deploy k6 --port 80 && kubectl --kubeconfig ./k6-kubeconfig create ing k6 ---class nginx --rule k6-test.ingress-nginx.local/=k6:80k6-test.ingress-nginx.local/=k6:80
           kubectl get all,ing --kubeconfig ./k6-kubeconfig
           
