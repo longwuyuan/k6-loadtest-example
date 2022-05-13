@@ -10,6 +10,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
+      - name: Checkout ingress-nginx
+        shell: apt-get install git -y
+
       - name: Run k6 cloud test
         uses: k6io/action@v0.1
         with:
