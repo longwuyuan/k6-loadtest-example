@@ -20,6 +20,8 @@ jobs:
         run: |
           id
           mkdir $HOME/bin
+          mkdir $HOME/.kube
+          export PATH=$PATH:$HOME/bin
           curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.13.0/kind-linux-amd64
           chmod +x ./kind
           mv kind $HOME/bin/kind
@@ -29,6 +31,7 @@ jobs:
           chmod +x kubectl
           mv kubectl $HOME/bin
           which kubectl
+          ls -lath $HOME/bin
           pwd
           ls -la
           cd ingress-nginx
@@ -36,9 +39,11 @@ jobs:
           make dev-env
           kind get clusters
           kubectl config get-contexts
-          kubectl get all,nodes -o wide --kubeconfig ./k6-kubeconfig
-          kubectl --kubeconfig ./k6-kubeconfig create deploy k6 --image nginx:alpine --port 80 && kubectl --kubeconfig ./k6-kubeconfig expose deploy k6 --port 80 && kubectl --kubeconfig ./k6-kubeconfig create ing k6 ---class nginx --rule k6-test.ingress-nginx.local/=k6:80k6-test.ingress-nginx.local/=k6:80
-          kubectl get all,ing --kubeconfig ./k6-kubeconfig
+          sleep 10
+          kubectl get all,nodes -o wide
+          kubectl create deploy k6 --image nginx:alpine --port 80 && kubectl expose deploy k6 --port 80 && kubectl create ing k6 ---class nginx --rule k6-test.ingress-nginx.local/=k6:80k6-test.ingress-nginx.local/=k6:80
+          sleep 10
+          kubectl get all,ing
           
       - name: Run k6 cloud test
         uses: k6io/action@v0.1
