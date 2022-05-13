@@ -1,6 +1,7 @@
 name: k6 cloud test
 on: 
   push:
+    branches: "*"
 
 jobs:
   k6_cloud_test_run:
