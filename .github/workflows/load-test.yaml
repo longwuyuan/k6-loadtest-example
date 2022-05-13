@@ -27,7 +27,9 @@ jobs:
           mv kubectl $HOME/bin
           which kubectl
           pwd
-          ls -l
+          ls -la
+          cd ../ingress-nginx
+          ls -la
           make dev-env
           kind get clusters
           kubectl config get-contexts
