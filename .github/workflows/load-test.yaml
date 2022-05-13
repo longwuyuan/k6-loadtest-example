@@ -1,14 +1,17 @@
-k6_cloud_test:
-on: push
-name: k6_cloud_test_run
-runs-on: ubuntu-latest
-  steps:
-    - name: Checkout
-      uses: actions/checkout@v1
+name: k6 cloud test
+on: 
+  push:
 
-    - name: Run k6 cloud test
-      uses: k6io/action@v0.1
-      with:
-        filename: test.js
-        cloud: true
-        token: ${{ secrets.K6_CLOUD_API_TOKEN }}
+jobs:
+  k6_cloud_test_run:
+  runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Run k6 cloud test
+        uses: k6io/action@v0.1
+        with:
+          filename: test.js
+          cloud: true
+          token: ${{ secrets.K6_CLOUD_API_TOKEN }}
