@@ -9,12 +9,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          repository: "https://github.com/kubernetes/ingress-nginx.git"
 
-      - name: Checkout ingress-nginx
+      - name: Create cluster
         run: |
           id
-          sudo su -
-          apt install git automake autoconf -y
           git clone https://github.com/kubernetes/ingress-nginx.git
           mkdir bin
           curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.13.0/kind-linux-amd64
