@@ -47,7 +47,7 @@ jobs:
           kubectl create deploy k6 --image nginx:alpine --port 80 && kubectl expose deploy k6 --port 80 && kubectl create ing k6 --class nginx --rule k6-test.ingress-nginx.local/=k6:80
           sleep 30
           kubectl get all,ing
-          curl k6-test.ingress-nginx.local
+          curl -H "Host: k6-test.ingress-nginx.local" localhost
           
       - name: Run k6 test
         uses: k6io/action@v0.1
