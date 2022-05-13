@@ -1,7 +1,13 @@
 name: k6 test
 on: 
-  push:
-    branches: "*"
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'     
+        required: true
+        default: 'warning'
+      tags:
+        description: 'K6 Load Test'  
 
 jobs:
   k6_test_run:
