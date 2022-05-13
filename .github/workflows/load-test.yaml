@@ -26,8 +26,8 @@ jobs:
           chmod +x kubectl
           mv kubectl $HOME/bin
           which kubectl
+          pwd
           ls -l
-          cd ingress-nginx
           make dev-env
           kind get clusters
           kubectl config get-contexts
