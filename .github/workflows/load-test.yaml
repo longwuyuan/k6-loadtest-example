@@ -48,7 +48,6 @@ jobs:
           sleep 30
           kubectl get all,ing
           curl k6-test.ingress-nginx.local
-          echo "curling for localhost" && curl http://localhost
           
       - name: Run k6 test
         uses: k6io/action@v0.1
