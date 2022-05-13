@@ -11,6 +11,6 @@ export const options = {
 };
 
 export default function () {
-  const res = http.get('https://test.k6.io');
+  const res = http.get('http://localhost');
   sleep(1);
 }
