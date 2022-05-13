@@ -52,4 +52,4 @@ jobs:
       - name: Run k6 test
         uses: k6io/action@v0.1
         with:
-          filename: /home/runner/work/k6-loadtest-example/k6-loadtest-example/test.js
+          filename: test.js
