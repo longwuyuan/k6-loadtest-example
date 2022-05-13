@@ -23,19 +23,17 @@ jobs:
           chmod +x ./kind
           mv kind $HOME/bin/kind
           which kind
-          kind get clusters
           curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
           chmod +x kubectl
           mv kubectl $HOME/bin
           which kubectl
           pwd
           ls -la
-          cd ingress-nginx
-          ls -la
-          make dev-env
+          kind get clusters
+          kind create cluster --name k6 --kubeconfig ./k6-kubeconfig
           kind get clusters
           kubectl config get-contexts
-          kubectl get all,nodes -o wide
+          kubectl get all,nodes -o wide --kubeconfig ./k6-kubeconfig
           kubectl create deploy k6 --image nginx:alpine --port 80 && kubectl expose deploy k6 --port 80 && kubectl create ing k6 ---class nginx --rule k6-test.ingress-nginx.local/=k6:80
 
       - name: Run k6 cloud test
