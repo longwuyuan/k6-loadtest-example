@@ -12,6 +12,8 @@ jobs:
 
       - name: Checkout ingress-nginx
         run: |
+          id
+          sudo su -
           apt install git automake autoconf -y
           git clone https://github.com/kubernetes/ingress-nginx.git
           mkdir bin
