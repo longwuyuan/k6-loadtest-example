@@ -13,11 +13,11 @@ jobs:
         uses: actions/checkout@v1
         with:
           repository: kubernetes/ingress-nginx
+          ref: main
 
       - name: Create cluster
         run: |
           id
-          git clone https://github.com/kubernetes/ingress-nginx.git
           mkdir bin
           curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.13.0/kind-linux-amd64
           chmod +x ./kind
