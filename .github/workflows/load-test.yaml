@@ -37,7 +37,7 @@ jobs:
           ls -la
           make dev-env
           sleep 10
-          kubectl create deploy k6 --image nginx:alpine --port 80 && kubectl expose deploy k6 --port 80 && kubectl create ing k6 ---class nginx --rule k6-test.ingress-nginx.local/=k6:80
+          kubectl create deploy k6 --image nginx:alpine --port 80 && kubectl expose deploy k6 --port 80 && kubectl create ing k6 --class nginx --rule k6-test.ingress-nginx.local/=k6:80
           sleep 10
           kubectl get all,ing
           curl -H "Host:k6-test.ingress-nginx.local" localhost
