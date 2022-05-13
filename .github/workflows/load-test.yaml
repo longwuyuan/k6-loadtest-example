@@ -34,6 +34,7 @@ jobs:
           kind get clusters
           kubectl config get-contexts
           kubectl get all,nodes -o wide --kubeconfig ./k6-kubeconfig
+          sleep 10
           kubectl create deploy k6 --image nginx:alpine --port 80 && kubectl expose deploy k6 --port 80 && kubectl create ing k6 ---class nginx --rule k6-test.ingress-nginx.local/=k6:80
 
       - name: Run k6 cloud test
