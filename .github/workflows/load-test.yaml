@@ -1,10 +1,10 @@
-name: k6 cloud test
+name: k6 test
 on: 
   push:
     branches: "*"
 
 jobs:
-  k6_cloud_test_run:
+  k6_test_run:
     runs-on: ubuntu-latest
 
     steps:
@@ -37,15 +37,13 @@ jobs:
           cd ingress-nginx
           ls -la
           make dev-env
-          kind get clusters
-          kubectl config get-contexts
           sleep 10
-          kubectl get all,nodes -o wide
-          kubectl create deploy k6 --image nginx:alpine --port 80 && kubectl expose deploy k6 --port 80 && kubectl create ing k6 ---class nginx --rule k6-test.ingress-nginx.local/=k6:80k6-test.ingress-nginx.local/=k6:80
+          kubectl create deploy k6 --image nginx:alpine --port 80 && kubectl expose deploy k6 --port 80 && kubectl create ing k6 ---class nginx --rule k6-test.ingress-nginx.local/=k6:80
           sleep 10
           kubectl get all,ing
+          curl -H "Host:k6-test.ingress-nginx.local" localhost
           
-      - name: Run k6 cloud test
+      - name: Run k6 test
         uses: k6io/action@v0.1
         with:
           filename: /home/runner/work/k6-loadtest-example/k6-loadtest-example/test.js
