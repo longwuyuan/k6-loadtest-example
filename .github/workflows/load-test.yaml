@@ -14,6 +14,7 @@ jobs:
           ref: main
 
       - name: Create cluster
+        working-directory: /home/runner/work/k6-loadtest-example
         run: |
           id
           mkdir $HOME/bin
