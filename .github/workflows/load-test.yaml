@@ -16,6 +16,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+
+      - name: Checkout
+        uses: actions/checkout@v1
         with:
           repository: longwuyuan/ingress-nginx
           ref: k6
@@ -49,8 +52,6 @@ jobs:
           kubectl get all,ing
           curl -H "Host: k6-test.ingress-nginx.local" localhost
           
-      - name: Checkout
-        uses: actions/checkout@v1
       - name: Run k6 test
         uses: k6io/action@v0.1
         with:
