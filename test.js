@@ -14,6 +14,6 @@ export const options = {
 };
 
 export default function () {
-  const res = http.get('http://k6-test.ingress-nginx.local');
+  const res = http.get('http://localhost');
   sleep(1);
 }
