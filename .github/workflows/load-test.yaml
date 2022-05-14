@@ -29,10 +29,10 @@ jobs:
           which kind
           cd ingress-nginx
           make dev-env
-          sleep 75
+          sleep 60
           kubectl get po -A
           kubectl create deploy k6 --image nginx:alpine --port 80 && kubectl expose deploy k6 --port 80 && kubectl create ing k6 --class nginx --rule localhost/=k6:80
-          sleep 30
+          sleep 15
           kubectl get all,ing
           curl localhost
  
