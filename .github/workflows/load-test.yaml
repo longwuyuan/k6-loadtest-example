@@ -16,9 +16,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-
-      - name: Checkout
-        uses: actions/checkout@v1
         with:
           repository: longwuyuan/ingress-nginx
           ref: k6
