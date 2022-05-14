@@ -27,23 +27,10 @@ jobs:
         working-directory: /home/runner/work/k6-loadtest-example
         continue-on-error: true
         run: |
-          id
-          mkdir $HOME/bin
           mkdir $HOME/.kube
-          export PATH=$PATH:$HOME/bin
-          curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.13.0/kind-linux-amd64
-          chmod +x ./kind
-          mv kind $HOME/bin/kind
-          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-          chmod +x kubectl
-          mv kubectl $HOME/bin
           which kubectl
-          which kind
-          ls -lath $HOME/bin
-          pwd
-          ls -la
+          which kinda
           cd ingress-nginx
-          ls -la
           make dev-env
           sleep 100
           kubectl get po -A
