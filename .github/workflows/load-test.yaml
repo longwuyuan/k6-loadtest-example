@@ -33,7 +33,7 @@ jobs:
           curl localhost
  
       - name: Run k6 test
-        working-directory: /home/runner/work/k6-loadtest-example
+        working-directory: /home/runner/work/k6-loadtest-example/ingress-nginx
         run: |
           pwd
           cd test/k6
