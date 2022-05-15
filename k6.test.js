@@ -11,12 +11,9 @@ export const options = {
 };
 
 export default function () {
-  const url = 'http://localhost');
   const params = {
-	   headers: {
-	     'host': 'k6.ingress-nginx.local',
-	   },
-	};
-  http.get(url, params);
+    headers: {'host': 'k6.ingress-nginx.local'},
+  };
+  const res = http.get('http://localhost', params);
   sleep(1);
 }
