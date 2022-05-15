@@ -28,6 +28,7 @@ jobs:
         run: |
           mkdir $HOME/.kube
           make dev-env
+          kubectl get all -A
           kubectl wait pod -n ingress-nginx --for condition=Ready `kubectl get po -A | grep ingress-nginx-controller | awk '{print $2}'` --timeout=75s 
           kubectl get all -A
 
