@@ -1,4 +1,4 @@
-name: k6 test
+name: Performance Test
 on: 
   workflow_dispatch:
     inputs:
@@ -7,10 +7,10 @@ on:
         required: true
         default: 'warning'
       tags:
-        description: 'K6 Load Test'  
+        description: 'Load Test with K6'  
 
 jobs:
-  k6_test_run:
+  performance_test_with_k6:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,13 +26,17 @@ jobs:
           mkdir $HOME/.kube
           make dev-env
           sleep 60
-          kubectl get po -A
+          kubectl get all -A
+
+      - name: Create Workload
+        working-directory: /home/runner/work/k6-loadtest-example/ingress-nginx
+        run: |
           kubectl create deploy k6 --image nginx:alpine --port 80 && kubectl expose deploy k6 --port 80 && kubectl create ing k6 --class nginx --rule localhost/=k6:80
           sleep 15
           kubectl get all,ing
           curl localhost
  
-      - name: Run k6 test
+      - name: Downlaod k6 executable
         working-directory: /home/runner/work/k6-loadtest-example/ingress-nginx
         run: |
           pwd
@@ -41,4 +45,7 @@ jobs:
           wget https://github.com/grafana/k6/releases/download/v0.38.2/k6-v0.38.2-linux-amd64.tar.gz
           tar xvf k6-v0.38.2-linux-amd64.tar.gz k6-v0.38.2-linux-amd64/k6
           mv k6-v0.38.2-linux-amd64/k6 .
-          ./k6 run ./k6.test.js
+
+      - name: Run LoadTest with K6
+        working-directory: /home/runner/work/k6-loadtest-example/ingress-nginx
+        run: ./k6 run ./k6.test.js
