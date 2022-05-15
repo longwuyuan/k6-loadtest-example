@@ -16,6 +16,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+
+      - name: Checkout
+        uses: actions/checkout@v1
         with:
           repository: longwuyuan/ingress-nginx
           ref: k6
@@ -25,29 +28,31 @@ jobs:
         run: |
           mkdir $HOME/.kube
           make dev-env
-          sleep 60
+          kubectl wait pod -n ingress-nginx --for condition=Ready `kubectl get po -n ingress-nginx | grep ingress-nginx-controller | awk '{print $2}'`
           kubectl get all -A
 
       - name: Create Workload
         working-directory: /home/runner/work/k6-loadtest-example/ingress-nginx
         run: |
-          kubectl create deploy k6 --image nginx:alpine --port 80 && kubectl expose deploy k6 --port 80 && kubectl create ing k6 --class nginx --rule localhost/=k6:80
-          sleep 15
+          kubectl create deploy k6 --image nginx:alpine --port 80 && kubectl expose deploy k6 --port 80 && kubectl create ing k6 --class nginx --rule k6.ingress-nginx.local/=k6:80
+          kubectl wait pod --for condition=Ready `kubectl get po | grep k6 | awk '{print $2}'`
           kubectl get all,ing
-          curl localhost
+          curl localhost -H "Host: k6.ingress-nginx.local"
  
       - name: Downlaod k6 executable
-        working-directory: /home/runner/work/k6-loadtest-example/ingress-nginx
+        working-directory: /home/runner/work/k6-loadtest-example/k6-loadtest-example
         run: |
           pwd
-          cd test/k6
           ls -l 
           wget https://github.com/grafana/k6/releases/download/v0.38.2/k6-v0.38.2-linux-amd64.tar.gz
           tar xvf k6-v0.38.2-linux-amd64.tar.gz k6-v0.38.2-linux-amd64/k6
           mv k6-v0.38.2-linux-amd64/k6 .
+          pwd
+          ls -l 
 
       - name: Run LoadTest with K6
-        working-directory: /home/runner/work/k6-loadtest-example/ingress-nginx
+        working-directory: /home/runner/work/k6-loadtest-example/k6-loadtest-example
         run: |
-          cd test/k6
-          ./k6 run ./k6.test.js
+          pwd
+          ls -l
+          ./k6 run ../k6.test.js
