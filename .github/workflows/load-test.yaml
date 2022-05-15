@@ -21,13 +21,9 @@ jobs:
           ref: k6
 
       - name: Create cluster
-        working-directory: /home/runner/work/k6-loadtest-example
-        continue-on-error: true
+        working-directory: /home/runner/work/k6-loadtest-example/ingress-nginx
         run: |
           mkdir $HOME/.kube
-          which kubectl
-          which kind
-          cd ingress-nginx
           make dev-env
           sleep 60
           kubectl get po -A
@@ -37,9 +33,12 @@ jobs:
           curl localhost
  
       - name: Run k6 test
+        working-directory: /home/runner/work/k6-loadtest-example
         run: |
           pwd
-          cd ../ingress-nginx
-          ls -l test
-          ls -l test/k6
-          ./test/k6/k6 run ./test/k6/k6.test.js
+          cd test/k6
+          ls -l 
+          wget https://github.com/grafana/k6/releases/download/v0.38.2/k6-v0.38.2-linux-amd64.tar.gz
+          tar xvf k6-v0.38.2-linux-amd64.tar.gz k6*/k6
+          mv k6*/k6 .
+          ./k6 run ./*.js
