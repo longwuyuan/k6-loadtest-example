@@ -48,4 +48,6 @@ jobs:
 
       - name: Run LoadTest with K6
         working-directory: /home/runner/work/k6-loadtest-example/ingress-nginx
-        run: ./k6 run ./k6.test.js
+        run: |
+          cd test/k6
+          ./k6 run ./k6.test.js
