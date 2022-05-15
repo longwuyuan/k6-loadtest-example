@@ -28,16 +28,16 @@ jobs:
         run: |
           mkdir $HOME/.kube
           make dev-env
-          sleep 5
-          kubectl wait pod -n ingress-nginx --for condition=Ready `kubectl get po -A | grep ingress-nginx-controller | awk '{print $2}'` --timeout=75s 
+          sleep 3
+          kubectl wait pod -n ingress-nginx --for condition=Ready `kubectl get po -A | grep ingress-nginx-controller | awk '{print $1}'` --timeout=75s 
           kubectl get all -A
 
       - name: Create Workload
         working-directory: /home/runner/work/k6-loadtest-example/ingress-nginx
         run: |
           kubectl create deploy k6 --image nginx:alpine --port 80 && kubectl expose deploy k6 --port 80 && kubectl create ing k6 --class nginx --rule k6.ingress-nginx.local/=k6:80
-          sleep 5
-          kubectl wait pod --for condition=Ready `kubectl get po | grep k6 | awk '{print $2}'`
+          sleep 3
+          kubectl wait pod --for condition=Ready `kubectl get po | grep k6 | awk '{print $1}'`
           kubectl get all,ing
           curl localhost -H "Host: k6.ingress-nginx.local"
  
