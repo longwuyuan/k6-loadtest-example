@@ -39,6 +39,6 @@ jobs:
           cd test/k6
           ls -l 
           wget https://github.com/grafana/k6/releases/download/v0.38.2/k6-v0.38.2-linux-amd64.tar.gz
-          tar xvf k6-v0.38.2-linux-amd64.tar.gz k6*/k6
-          mv k6*/k6 .
-          ./k6 run ./*.js
+          tar xvf k6-v0.38.2-linux-amd64.tar.gz k6-v0.38.2-linux-amd64/k6
+          mv k6-v0.38.2-linux-amd64/k6 .
+          ./k6 run ./k6.test.js
