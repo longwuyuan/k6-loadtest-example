@@ -37,6 +37,8 @@ jobs:
       - name: Create Workload
         working-directory: /home/runner/work/k6-loadtest-example/ingress-nginx
         run: |
+          echo $CERT_INGRESSNGINXCONTROLLER \
+          echo $PRIVKEY_INGRESSNGINXCONTROLLER \
           kubectl create secret tls certificate.test.ingress-nginx-controller.ga \
             --cert $CERT_INGRESSNGINXCONTROLLER \
             --key $PRIVKEY_INGRESSNGINXCONTROLLER && \
