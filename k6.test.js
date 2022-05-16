@@ -2,6 +2,10 @@ import http from 'k6/http';
 import { sleep } from 'k6';
 
 export const options = {
+  hosts: {
+    'test.ingress-nginx-controller.ga:80': '127.0.0.1:80',
+    'test.ingress-nginx-controller.ga:443': '127.0.0.1:443',
+  },
   duration: '1m',
   vus: 50,
   thresholds: {
@@ -14,6 +18,6 @@ export default function () {
   const params = {
     headers: {'host': 'test.ingress-nginx-controller.ga'},
   };
-  const res = http.get('https://localhost', params);
+  const res = http.get('http://test.ingress-nginx-controller.ga', params);
   sleep(1);
 }
