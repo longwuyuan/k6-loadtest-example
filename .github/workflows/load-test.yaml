@@ -23,6 +23,17 @@ jobs:
           repository: longwuyuan/ingress-nginx
           ref: k6
 
+      - name: Downlaod k6 executable
+        working-directory: /home/runner/work/k6-loadtest-example/k6-loadtest-example
+        run: |
+          pwd
+          ls -l 
+          wget https://github.com/grafana/k6/releases/download/v0.38.2/k6-v0.38.2-linux-amd64.tar.gz
+          tar xvf k6-v0.38.2-linux-amd64.tar.gz k6-v0.38.2-linux-amd64/k6
+          mv k6-v0.38.2-linux-amd64/k6 .
+          pwd
+          ls -l 
+          
       - name: Create cluster
         working-directory: /home/runner/work/k6-loadtest-example/ingress-nginx
         run: |
@@ -36,13 +47,17 @@ jobs:
 
       - name: Create Workload
         working-directory: /home/runner/work/k6-loadtest-example/ingress-nginx
+        env:
+          CERT: ${{ secrets.CERT_INGRESSNGINXCONTROLLER }}
+          PRIVKEY: ${{ secrets.PRIVKEY_INGRESSNGINXCONTROLLER }}
         run: |
-          echo $CERT_INGRESSNGINXCONTROLLER \
-          echo $PRIVKEY_INGRESSNGINXCONTROLLER \
+          echo $CERT | base64 --decode > certificate.crt
+          openssl x509 -in certificate.crt -text -noout
+          echo $PRIVKEY | base64 --decode > private.key
           kubectl create secret tls certificate.test.ingress-nginx-controller.ga \
-            --cert $CERT_INGRESSNGINXCONTROLLER \
-            --key $PRIVKEY_INGRESSNGINXCONTROLLER && \
-            kubectl create deploy k6 --image nginx:alpine --port 80 && \
+            --cert certificate.crt \
+            --key private.key
+          kubectl create deploy k6 --image nginx:alpine --port 80 && \
             kubectl expose deploy k6 --port 80 && \
             kubectl create ing k6 --class nginx \
             --rule test.ingress-nginx-controller.ga/=k6:80,tls=certificate.test.ingress-nginx-controller.ga
@@ -50,18 +65,7 @@ jobs:
           sleep 5
           echo "..waiting for k6 pod to be Running"
           kubectl wait pod --for condition=Ready `kubectl get po | grep k6 | awk '{print $1}'`
-          kubectl get all,ing
- 
-      - name: Downlaod k6 executable
-        working-directory: /home/runner/work/k6-loadtest-example/k6-loadtest-example
-        run: |
-          pwd
-          ls -l 
-          wget https://github.com/grafana/k6/releases/download/v0.38.2/k6-v0.38.2-linux-amd64.tar.gz
-          tar xvf k6-v0.38.2-linux-amd64.tar.gz k6-v0.38.2-linux-amd64/k6
-          mv k6-v0.38.2-linux-amd64/k6 .
-          pwd
-          ls -l 
+          kubectl get all,ing 
 
       - name: Run LoadTest with K6
         working-directory: /home/runner/work/k6-loadtest-example/k6-loadtest-example
