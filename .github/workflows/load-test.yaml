@@ -43,7 +43,6 @@ jobs:
           echo "..waiting for k6 pod to be Running"
           kubectl wait pod --for condition=Ready `kubectl get po | grep k6 | awk '{print $1}'`
           kubectl get all,ing
-          curl localhost -H "Host: k6.ingress-nginx.local"
  
       - name: Downlaod k6 executable
         working-directory: /home/runner/work/k6-loadtest-example/k6-loadtest-example
@@ -61,4 +60,7 @@ jobs:
         run: |
           pwd
           ls -l
+          kubectl describe ing
+          cat k6.test.js
+          curl localhost -H "Host: k6.ingress-nginx.local"
           ./k6 run ./k6.test.js
