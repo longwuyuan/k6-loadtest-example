@@ -12,8 +12,8 @@ export const options = {
 
 export default function () {
   const params = {
-    headers: {'host': 'k6.ingress-nginx.local'},
+    headers: {'host': 'test.ingress-nginx-controller.ga'},
   };
-  const res = http.get('http://localhost', params);
+  const res = http.get('https://localhost', params);
   sleep(1);
 }
