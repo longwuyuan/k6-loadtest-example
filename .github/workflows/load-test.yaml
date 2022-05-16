@@ -37,7 +37,13 @@ jobs:
       - name: Create Workload
         working-directory: /home/runner/work/k6-loadtest-example/ingress-nginx
         run: |
-          kubectl create secret tls certificate.test.ingress-nginx-controller.ga --cert $CERT_INGRESSNGINXCONTROLLER --key $PRIVKEY_INGRESSNGINXCONTROLLER && kubectl create deploy k6 --image nginx:alpine --port 80 && kubectl expose deploy k6 --port 80 && kubectl create ing k6 --class nginx --rule k6.ingress-nginx.local/=k6:80,tls=certificate.test.ingress-nginx-controller.ga
+          kubectl create secret tls certificate.test.ingress-nginx-controller.ga \
+            --cert $CERT_INGRESSNGINXCONTROLLER \
+            --key $PRIVKEY_INGRESSNGINXCONTROLLER && \
+            kubectl create deploy k6 --image nginx:alpine --port 80 && \
+            kubectl expose deploy k6 --port 80 && \
+            kubectl create ing k6 --class nginx \
+            --rule test.ingress-nginx-controller.ga/=k6:80,tls=certificate.test.ingress-nginx-controller.ga
           echo "..sleeping 5secs to get k6 podname"
           sleep 5
           echo "..waiting for k6 pod to be Running"
