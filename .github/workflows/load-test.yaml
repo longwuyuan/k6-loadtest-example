@@ -80,7 +80,7 @@ jobs:
             -H "Host: test.ingress-nginx-controller.ga" \
             --resolve test.ingress-nginx-controller.ga:80:127.0.0.1 \
             --resolve test.ingress-nginx-controller.ga:443:127.0.0.1
-          kubectl -n ingress-nginx logs ingress-nginx-controller \
+          kubectl -n ingress-nginx logs  \
             `kubectl get po -n ingress-nginx | grep controller | awk '{print $1}'`
 
       - name: Run k6 LoadTest
