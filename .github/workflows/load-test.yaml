@@ -42,7 +42,8 @@ jobs:
           echo "..sleeping 5secs to get controller podname"
           sleep 5
           echo "..waiting for controller pod to be Running"
-          kubectl wait pod -n ingress-nginx --for condition=Ready `kubectl get po -n ingress-nginx | grep controller | awk '{print $1}'` --timeout=75s 
+          kubectl wait pod -n ingress-nginx --for condition=Ready \
+            `kubectl get po -n ingress-nginx | grep controller | awk '{print $1}'` --timeout=75s
           kubectl get all -A
 
       - name: Create Workload
@@ -75,7 +76,12 @@ jobs:
           ./k6
           cat k6.test.js
           kubectl get ing -o yaml
-          curl -vL test.ingress-nginx-controller.ga --resolve test.ingress-nginx-controller.ga:80:127.0.0.1 --resolve test.ingress-nginx-controller.ga:443:127.0.0.1 -H "Host: test.ingress-nginx-controller.ga"
+          curl -vL test.ingress-nginx-controller.ga \
+            --resolve test.ingress-nginx-controller.ga:80:127.0.0.1 \
+            --resolve test.ingress-nginx-controller.ga:443:127.0.0.1 \
+            -H "Host: test.ingress-nginx-controller.ga"
+          kubectl -n ingress-nginx logs ingress-nginx-controller \
+            `kubectl get po -n ingress-nginx | grep controller | awk '{print $1}'` --timeout=75s
 
       - name: Run k6 LoadTest
         working-directory: /home/runner/work/k6-loadtest-example/k6-loadtest-example
