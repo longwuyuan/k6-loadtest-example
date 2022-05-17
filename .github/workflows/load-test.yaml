@@ -26,13 +26,10 @@ jobs:
       - name: Downlaod k6 executable
         working-directory: /home/runner/work/k6-loadtest-example/k6-loadtest-example
         run: |
-          pwd
-          ls -l 
           wget https://github.com/grafana/k6/releases/download/v0.38.2/k6-v0.38.2-linux-amd64.tar.gz
           tar xvf k6-v0.38.2-linux-amd64.tar.gz k6-v0.38.2-linux-amd64/k6
           mv k6-v0.38.2-linux-amd64/k6 .
-          pwd
-          ls -l 
+          ./k6
           
       - name: Create cluster
         working-directory: /home/runner/work/k6-loadtest-example/ingress-nginx
@@ -44,6 +41,7 @@ jobs:
           echo "..waiting for controller pod to be Running"
           kubectl wait pod -n ingress-nginx --for condition=Ready \
             `kubectl get po -n ingress-nginx | grep controller | awk '{print $1}'` --timeout=75s
+          echo "..listing cluster resources"
           kubectl get all -A
 
       - name: Create Workload
@@ -53,36 +51,22 @@ jobs:
           PRIVKEY: ${{ secrets.PRIVKEY_INGRESSNGINXCONTROLLER }}
         run: |
           echo $CERT | base64 --decode > certificate.crt
-          # openssl x509 -in certificate.crt -text -noout
           echo $PRIVKEY | base64 --decode > private.key
+          echo "..creating the tls secret"
           kubectl create secret tls certificate.test.ingress-nginx-controller.ga \
             --cert certificate.crt \
             --key private.key
+          echo "..creating deployment, service & ingress to test"
           kubectl create deploy k6 --image nginx:alpine --port 80 && \
             kubectl expose deploy k6 --port 80 && \
             kubectl create ing k6 --class nginx \
             --rule "test.ingress-nginx-controller.ga/*=k6:80,tls=certificate.test.ingress-nginx-controller.ga"
-          echo "..sleeping 5secs to get k6 podname"
+          echo "..sleeping 5secs to get podname"
           sleep 5
-          echo "..waiting for k6 pod to be Running"
+          echo "..waiting for pod to be Running"
           kubectl wait pod --for condition=Ready `kubectl get po | grep k6 | awk '{print $1}'`
           kubectl get all,secrets,ing 
 
-      - name: Check Test
-        working-directory: /home/runner/work/k6-loadtest-example/k6-loadtest-example
-        run: |
-          pwd
-          ls -l
-          ./k6
-          cat k6.test.js
-          kubectl get ing -o yaml
-          curl -vL localhost \
-            -H "Host: test.ingress-nginx-controller.ga" \
-            --resolve test.ingress-nginx-controller.ga:80:127.0.0.1 \
-            --resolve test.ingress-nginx-controller.ga:443:127.0.0.1
-          kubectl -n ingress-nginx logs  \
-            `kubectl get po -n ingress-nginx | grep controller | awk '{print $1}'`
-
       - name: Run k6 LoadTest
         working-directory: /home/runner/work/k6-loadtest-example/k6-loadtest-example
-        run: ./k6 run ./k6.test.js
+        run: ./k6 run ./smoketest.js
