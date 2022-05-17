@@ -69,10 +69,12 @@ jobs:
 
       - name: Run LoadTest with K6
         working-directory: /home/runner/work/k6-loadtest-example/k6-loadtest-example
+        continue-on-error: true
         run: |
           pwd
           ls -l
           kubectl describe ing
           cat k6.test.js
-          curl -vL localhost --resolve test.ingress-nginx-controller.ga:80:127.0.0.1 --resolve test.ingress-nginx-controller.ga:443:127.0.0.1 -H "Host: test.ingress-nginx-controller.ga"
+          curl -vL test.ingress-nginx-controller.ga --resolve test.ingress-nginx-controller.ga:80:127.0.0.1 --resolve test.ingress-nginx-controller.ga:443:127.0.0.1
           ./k6 run ./k6.test.js
+          openssl s_client -connect 127.0.0.1:443 -servername test.ingress-nginx-controller.ga 
