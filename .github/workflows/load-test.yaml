@@ -69,7 +69,6 @@ jobs:
 
       - name: Check Test
         working-directory: /home/runner/work/k6-loadtest-example/k6-loadtest-example
-        continue-on-error: true
         run: |
           pwd
           ls -l
