@@ -75,7 +75,7 @@ jobs:
           ls -l
           kubectl describe ing
           cat k6.test.js
-          k6
+          ./k6
           curl -vIL test.ingress-nginx-controller.ga --resolve test.ingress-nginx-controller.ga:80:127.0.0.1 --resolve test.ingress-nginx-controller.ga:443:127.0.0.1
 
       - name: Run k6 LoadTest
