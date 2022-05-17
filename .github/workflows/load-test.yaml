@@ -76,12 +76,12 @@ jobs:
           ./k6
           cat k6.test.js
           kubectl get ing -o yaml
-          curl -vL test.ingress-nginx-controller.ga \
+          curl -vL localhost \
+            -H "Host: test.ingress-nginx-controller.ga" \
             --resolve test.ingress-nginx-controller.ga:80:127.0.0.1 \
-            --resolve test.ingress-nginx-controller.ga:443:127.0.0.1 \
-            -H "Host: test.ingress-nginx-controller.ga"
+            --resolve test.ingress-nginx-controller.ga:443:127.0.0.1
           kubectl -n ingress-nginx logs ingress-nginx-controller \
-            `kubectl get po -n ingress-nginx | grep controller | awk '{print $1}'` --timeout=75s
+            `kubectl get po -n ingress-nginx | grep controller | awk '{print $1}'`
 
       - name: Run k6 LoadTest
         working-directory: /home/runner/work/k6-loadtest-example/k6-loadtest-example
