@@ -57,7 +57,7 @@ jobs:
             --cert certificate.crt \
             --key private.key
           echo "..creating deployment, service & ingress to test"
-          kubectl create deploy k6 --image nginx:alpine --port 80 && \
+          kubectl create deploy k6 --image kennethreitz/httpbin --port 80 && \
             kubectl expose deploy k6 --port 80 && \
             kubectl create ing k6 --class nginx \
             --rule "test.ingress-nginx-controller.ga/*=k6:80,tls=certificate.test.ingress-nginx-controller.ga"
