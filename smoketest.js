@@ -19,6 +19,27 @@ export default function () {
   const params = {
     headers: {'host': 'test.ingress-nginx-controller.ga'},
   };
-  const res = http.get('http://test.ingress-nginx-controller.ga', params);
+  const req1 = {
+  	method: 'GET',
+  	url: 'http://test.ingress-nginx-controller.ga/ip',
+  };
+  const req2 = {
+  	method: 'GET',
+  	url: 'https://test.ingress-nginx-controller.ga/image/svg',
+  };
+  const req3 = {
+  	params: {
+  	  Headers: {
+        'host': 'test.ingress-nginx-controller.ga',
+        'Content-Type': 'application/x-www-form-urlencoded' 
+      },
+  	},
+  	method: 'POST',
+  	url: 'https://test.ingress-nginx-controller.ga/post',
+  	body: {
+  	  hello: 'world!',
+  	},
+  };
+  const res = http.batch([req1, req2, req3]);
   sleep(1);
 }
