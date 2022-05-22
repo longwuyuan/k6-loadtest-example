@@ -1,4 +1,4 @@
-name: Performance Test
+name: Smoke Test
 on: 
   workflow_dispatch:
     inputs:
@@ -10,8 +10,8 @@ on:
         description: 'Load Test with K6'  
 
 jobs:
-  performance_test_with_k6:
-    runs-on: ubuntu-latest
+  Smoke_Test_using_k6:
+    runs-on: ubuntu-latest    
 
     steps:
       - name: Checkout
