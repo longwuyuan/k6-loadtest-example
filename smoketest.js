@@ -25,15 +25,9 @@ export default function () {
   };
   const req2 = {
   	method: 'GET',
-  	url: 'https://test.ingress-nginx-controller.ga/image/svg',
+  	url: 'http://test.ingress-nginx-controller.ga/image/svg',
   };
   const req3 = {
-  	params: {
-  	  headers: {
-        'host': 'test.ingress-nginx-controller.ga',
-        'Content-Type': 'application/x-www-form-urlencoded' 
-      },
-  	},
   	method: 'POST',
   	url: 'https://test.ingress-nginx-controller.ga/post',
     headers: {
