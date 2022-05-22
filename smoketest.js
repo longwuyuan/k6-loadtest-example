@@ -31,6 +31,6 @@ export default function () {
   	method: 'GET',
   	url: 'https://test.ingress-nginx-controller.ga/user-agent',
   };
-  const res = http.batch([req1, req2, req3]);
+  const res = http.batch([req1, req2, req3], params);
   sleep(1);
 }
