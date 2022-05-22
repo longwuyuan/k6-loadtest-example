@@ -19,18 +19,6 @@ export default function () {
   const params = {
     headers: {'host': 'test.ingress-nginx-controller.ga'},
   };
-  const req1 = {
-  	method: 'GET',
-  	url: 'http://test.ingress-nginx-controller.ga/ip',
-  };
-  const req2 = {
-  	method: 'GET',
-  	url: 'https://test.ingress-nginx-controller.ga/image/svg',
-  };
-  const req3 = {
-  	method: 'GET',
-  	url: 'https://test.ingress-nginx-controller.ga/user-agent',
-  };
-  const res = http.batch([req1, req2, req3], params);
+  const res = http.get('http://test.ingress-nginx-controller.ga/user-agent', params);
   sleep(1);
 }
