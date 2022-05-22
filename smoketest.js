@@ -11,7 +11,7 @@ export const options = {
   thresholds: {
     http_req_failed: ['rate<0.01'], // http errors should be less than 1%
     http_req_duration: ['p(95)<500'], // 95 percent of response times must be below 500ms
-    http_req_duration: ['p(99)<1500'], // 95 percent of response times must be below 1500ms
+    http_req_duration: ['p(99)<1500'], // 99 percent of response times must be below 1500ms
   },
 };
 
@@ -28,12 +28,12 @@ export default function () {
   	url: 'http://test.ingress-nginx-controller.ga/image/svg',
   };
   const req3 = {
-  	method: 'POST',
-  	url: 'https://test.ingress-nginx-controller.ga/post',
+    method: 'POST',
+	url: 'https://test.ingress-nginx-controller.ga/post',
     params: {
       headers: {
         'Content-Type': 'application/json',
-      };
+      },
     },
   	body: {
   	  'key1': 'Hello World!',
