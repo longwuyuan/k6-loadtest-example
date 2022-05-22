@@ -28,17 +28,8 @@ export default function () {
   	url: 'https://test.ingress-nginx-controller.ga/image/svg',
   };
   const req3 = {
-  	params: {
-  	  Headers: {
-        'host': 'test.ingress-nginx-controller.ga',
-        'Content-Type': 'application/x-www-form-urlencoded' 
-      },
-  	},
-  	method: 'POST',
-  	url: 'https://test.ingress-nginx-controller.ga/post',
-  	body: {
-  	  hello: 'world!',
-  	},
+  	method: 'GET',
+  	url: 'https://test.ingress-nginx-controller.ga/user-agent',
   };
   const res = http.batch([req1, req2, req3]);
   sleep(1);
