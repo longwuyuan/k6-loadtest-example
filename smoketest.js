@@ -30,11 +30,13 @@ export default function () {
   const req3 = {
   	method: 'POST',
   	url: 'https://test.ingress-nginx-controller.ga/post',
-    headers: {
-      "Content-Type": "application/json",
-    }
+    params: {
+      headers: {
+        'Content-Type': 'application/json',
+      };
+    },
   	body: {
-  	  "key1": "Hello World!",
+  	  'key1': 'Hello World!',
   	},
   };
   const res = http.batch([req1, req2, req3], params);
