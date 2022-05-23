@@ -67,6 +67,17 @@ jobs:
           kubectl wait pod --for condition=Ready `kubectl get po | grep k6 | awk '{print $1}'`
           kubectl get all,secrets,ing 
 
+      - name: Tune OS
+        run : |
+          sudo sysctl -A 2>/dev/null | egrep -i "local_port_range|tw_reuse|tcp_timestamps"
+          sudo ulimit
+          sudo sysctl -w net.ipv4.ip_local_port_range="1024 65535"
+          sudo sysctl -w net.ipv4.tcp_tw_reuse=1
+          sudo sysctl -w net.ipv4.tcp_timestamps=1
+          sudo ulimit -n 250000
+          sudo sysctl -A 2>/dev/null | egrep -i "local_port_range|tw_reuse|tcp_timestamps"
+          sudo ulimit
+
       - name: Run k6 LoadTest
         working-directory: /home/runner/work/k6-loadtest-example/k6-loadtest-example
         run: |
