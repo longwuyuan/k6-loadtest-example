@@ -70,13 +70,11 @@ jobs:
       - name: Tune OS
         run : |
           sudo sysctl -A 2>/dev/null | egrep -i "local_port_range|tw_reuse|tcp_timestamps"
-          sudo ulimit
+          sudo sh -c "ulimit"
           sudo sysctl -w net.ipv4.ip_local_port_range="1024 65535"
           sudo sysctl -w net.ipv4.tcp_tw_reuse=1
           sudo sysctl -w net.ipv4.tcp_timestamps=1
-          sudo ulimit -n 250000
-          sudo sysctl -A 2>/dev/null | egrep -i "local_port_range|tw_reuse|tcp_timestamps"
-          sudo ulimit
+          sudo sh -c "ulimit "
 
       - name: Run k6 LoadTest
         working-directory: /home/runner/work/k6-loadtest-example/k6-loadtest-example
