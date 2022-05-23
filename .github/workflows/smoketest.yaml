@@ -77,9 +77,13 @@ jobs:
           sudo sh -c "ulimit "
 
       - name: Run k6 LoadTest
+        env:
+          K6_TOKEN: ${{K6_CLOUD_TOKEN}}
         working-directory: /home/runner/work/k6-loadtest-example/k6-loadtest-example
         run: |
           vmstat -at 5 | tee vmstat_report &
+          #./k6 login cloud -t $K6_TOKEN
+          #./k6 run -o cloud ./smoketest.js
           ./k6 run ./smoketest.js
           pkill vmstat
           cat vmstat_report
