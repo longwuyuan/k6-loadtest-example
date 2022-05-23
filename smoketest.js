@@ -43,7 +43,7 @@ export default function () {
   	  'key1': 'Hello World!',
   	},
   };
-  for(let i=0; i<10; i++){
+  for(let i=0; i<40; i++){
     const res = http.batch([req0, req1, req2, req3], params);
     sleep(1);
   }
