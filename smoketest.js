@@ -19,6 +19,10 @@ export default function () {
   const params = {
     headers: {'host': 'test.ingress-nginx-controller.ga'},
   };
+  const req0 = {
+  	method: 'GET',
+  	url: 'http://test.ingress-nginx-controller.ga/get',
+  };
   const req1 = {
   	method: 'GET',
   	url: 'http://test.ingress-nginx-controller.ga/ip',
@@ -39,6 +43,8 @@ export default function () {
   	  'key1': 'Hello World!',
   	},
   };
-  const res = http.batch([req1, req2, req3], params);
-  sleep(1);
+  for(let i=0; i<10; i++){
+    const res = http.batch([req0, req1, req2, req3], params);
+    sleep(1);
+  }
 }
