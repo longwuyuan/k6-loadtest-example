@@ -7,7 +7,7 @@ export const options = {
     'test.ingress-nginx-controller.ga:443': '127.0.0.1:443',
   },
   duration: '1m',
-  vus: 200,
+  vus: 150,
   thresholds: {
     http_req_failed: ['rate<0.01'], // http errors should be less than 1%
     http_req_duration: ['p(95)<500'], // 95 percent of response times must be below 500ms
@@ -43,8 +43,17 @@ export default function () {
   	  'key1': 'Hello World!',
   	},
   };
+  const req4 = {
+    method: 'GET',
+    url: 'https://test.ingress-nginx-controller.ga/basic-auth/admin/admin',
+    params: {
+      headers: {
+        'accept': 'application/jsom',
+      }
+    }
+  }
   for(let i=0; i<20; i++){
-    const res = http.batch([req0, req1, req2, req3], params);
+    const res = http.batch([req0, req1, req2, req3, req4], params);
     sleep(1);
   }
 }
