@@ -69,4 +69,8 @@ jobs:
 
       - name: Run k6 LoadTest
         working-directory: /home/runner/work/k6-loadtest-example/k6-loadtest-example
-        run: ./k6 run ./smoketest.js
+        run: |
+          vmstat -at 5 | tee vmstat_report &
+          ./k6 run ./smoketest.js
+          pkill vmstat
+          cat vmstat_report
