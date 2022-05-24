@@ -43,17 +43,8 @@ export default function () {
   	  'key1': 'Hello World!',
   	},
   };
-  const req4 = {
-    method: 'GET',
-    url: 'https://test.ingress-nginx-controller.ga/basic-auth/admin/admin',
-    params: {
-      headers: {
-        'accept': 'application/json',
-      }
-    }
-  }
   for(let i=0; i<20; i++){
-    const res = http.batch([req0, req1, req2, req3, req4], params);
+    const res = http.batch([req0, req1, req2, req3], params);
     sleep(1);
   }
 }
