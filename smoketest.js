@@ -7,7 +7,7 @@ export const options = {
     'test.ingress-nginx-controller.ga:443': '127.0.0.1:443',
   },
   duration: '1m',
-  vus: 50,
+  vus: 100,
   thresholds: {
     http_req_failed: ['rate<0.01'], // http errors should be less than 1%
     http_req_duration: ['p(95)<500'], // 95 percent of response times must be below 500ms
