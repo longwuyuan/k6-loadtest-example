@@ -48,7 +48,7 @@ export default function () {
     url: 'https://test.ingress-nginx-controller.ga/basic-auth/admin/admin',
     params: {
       headers: {
-        'accept': 'application/jsom',
+        'accept': 'application/json',
       }
     }
   }
