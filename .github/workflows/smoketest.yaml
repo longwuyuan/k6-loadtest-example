@@ -78,7 +78,7 @@ jobs:
 
       - name: Run k6 LoadTest
         env:
-          K6_TOKEN: ${{K6_CLOUD_TOKEN}}
+          K6_TOKEN: ${{ secrets.K6_CLOUD_TOKEN }}
         working-directory: /home/runner/work/k6-loadtest-example/k6-loadtest-example
         run: |
           vmstat -at 5 | tee vmstat_report &
